@@ -14,30 +14,35 @@
 		/* Timer 0 */
 		{
 			USED,
-			NORMAL,
+			NORMAL_T0_T2,
+			NORMAL_OPERATION_T0_T2 ,
 			YES,
-			NO,
+			INTERRPUT_OVF_T0,
 			0,
 			NP,
-			prescaler_8,
+			NP,
+			prescaler_8_T0_T1,
 			NP,
 			NP
 		},
 		/* Timer 1 */
 		{
-		    USED,
-			FAST_PWM,
+			NOT_USED,
+			FAST_PWM_T1_OCR1,
+			NORMAL_OPERATION_T1,
 			NO,
-			YES,
+
 			NP,
 			128,
-			prescaler_8,
+			NP,
+			prescaler_8_T0_T1,
 			OC1A,
 			NP
 		},
 		/* Timer 2 */
 		{
 			NOT_USED,
+			NP,
 			NP,
 			NP,
 			NP,
