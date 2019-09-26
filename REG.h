@@ -38,4 +38,7 @@
 #define TIMER_TCNT2_REGISTER *(volatile uint8_t *)0x44
 #define TIMER_OCR2_REGISTER *(volatile uint8_t *)0x43
 
+#define Interrupt_SREG_REGISTER *(volatile uint8_t *)0x5F
+
+
 #endif
