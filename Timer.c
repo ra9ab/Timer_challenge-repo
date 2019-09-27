@@ -4,17 +4,18 @@
  *  Created on: 20 Sep 2019
  *      Author: RGB
  */
+
 #include "timer.h"
 #include "REG.h"
-uint8_t  prescaler(uint8_t timer , uint8_t pre_scaler) ;
-uint8_t mode_fnc (uint8_t timer , uint8_t Mode) ;
-uint8_t options(uint8_t timer);
-uint8_t Timer0_Timer2_option(uint8_t timer,uint8_t Com_Mode);
-uint8_t Timer1_option (uint8_t timer,uint8_t Com_Mode,uint8_t icu_edge);
-uint8_t set_preload (uint8_t timer,uint_16 Pre_Load);
-uint8_t set_OCR (uint8_t timer,uint_16 cmp_value);
-uint8_t set_ICR (uint8_t timer,uint_16 ICR);
-uint8_t Timer_interrupt_init(uint8_t timer,uint8_t interrupt);
+
+static uint8_t   prescaler(uint8_t timer , uint8_t pre_scaler) ;
+static uint8_t   mode_fnc (uint8_t timer , uint8_t Mode) ;
+static uint8_t   options(uint8_t timer);
+static uint8_t  Timer0_Timer2_option(uint8_t timer,uint8_t Com_Mode);
+static uint8_t Timer1_option (uint8_t timer,uint8_t Com_Mode,uint8_t icu_edge);
+static uint8_t set_OCR (uint8_t timer,uint_16 cmp_value);
+static uint8_t set_ICR (uint8_t timer,uint_16 ICR);
+static uint8_t Timer_interrupt_init(uint8_t timer,uint8_t interrupt);
 
 
 
@@ -22,14 +23,15 @@ uint8_t Timer_interrupt_init(uint8_t timer,uint8_t interrupt);
 
 
 uint8_t retvalue = OK ;
-
+/* initialization function that call number of static local function
+ * and return a unit8 value (ok/nok)  */
 uint8_t Timer_init(void)
 {
 	uint8_t loop_index = 0;
 
 	for(loop_index=0;loop_index<MAX_NUM_OF_TIMERS;loop_index++)
 	{
-		if(TIMER_cnfg_arr[loop_index].used==USED)
+		if(TIMER_cnfg_arr[loop_index].used==USED) //this timer is used or not
 		{
 			retvalue = prescaler(loop_index,TIMER_cnfg_arr[loop_index].prescaler);
 			retvalue = mode_fnc(loop_index,TIMER_cnfg_arr[loop_index].mode);
@@ -41,35 +43,24 @@ uint8_t Timer_init(void)
 		}
 		else if(TIMER_cnfg_arr[loop_index].used==NOT_USED)
 		{
-			loop_index++;
+			//loop_index++;
 		}
 		else
 		{
 			retvalue=NOK;
 		}
-
-
 	}
-
-
-
-
-
-
-
-
-
 
 	return retvalue ;
 }
 
-
+/*function to set prescaler that takes timer value and prescaler value as argument */
 uint8_t prescaler(uint8_t timer , uint8_t pre_scaler)
 {
 	switch (timer)
 	{
 		case 0 :
-			TIMER_TCCR0_REGISTER &=0XF8;/*andding reg with 11111000*/
+			TIMER_TCCR0_REGISTER &=0XF8;/* andding reg with 11111000 to clear first 3 bits of the register*/
 			TIMER_TCCR0_REGISTER |= pre_scaler ;
 			break ;
 		case 1 :
@@ -88,16 +79,20 @@ uint8_t prescaler(uint8_t timer , uint8_t pre_scaler)
 	return retvalue ;
 }
 
-
+/*function to set mode that takes timer value and mode value as argument */
 uint8_t mode_fnc (uint8_t timer , uint8_t Mode)
 {
 	switch (timer)
 		{
+	/*set timer0 mode */
 
 		case 0 :
 			TIMER_TCCR0_REGISTER &=0XB7; /*andding reg with 101101111*/
 			TIMER_TCCR0_REGISTER |= Mode ; /*orring reg with Mode check timer.h*/
 				break ;
+
+
+				/*set timer1 mode */
 		case 1 :
 				switch(Mode)
 				{
@@ -109,7 +104,6 @@ uint8_t mode_fnc (uint8_t timer , uint8_t Mode)
 					TIMER_TCCR1B_REGISTER |=0;
 
 					break ;
-
 				case COMPER_T1_OCR1 :
 
 					TIMER_TCCR1A_REGISTER &=0xFC;
@@ -213,6 +207,8 @@ uint8_t mode_fnc (uint8_t timer , uint8_t Mode)
 				}
 
 				break ;
+				/*set timer2 mode */
+
 		case 2 :
 			TIMER_TCCR2_REGISTER &=0XB7;
 			TIMER_TCCR2_REGISTER |= Mode ;
@@ -228,6 +224,9 @@ uint8_t mode_fnc (uint8_t timer , uint8_t Mode)
 
 }
 
+
+/*function to that takes timer value and oco , oc2 pins value and
+ * set which mode you want to use*/
 uint8_t Timer0_Timer2_option (uint8_t timer,uint8_t Com_Mode)
 {
 	switch(timer)
@@ -247,6 +246,10 @@ uint8_t Timer0_Timer2_option (uint8_t timer,uint8_t Com_Mode)
 	return retvalue ;
 }
 
+
+
+/*function to that takes timer value and oc1 , icu  pins value and
+ * set which mode you want to use*/
 uint8_t Timer1_option (uint8_t timer,uint8_t Com_Mode,uint8_t icu_edge)
 {
 	if (timer ==1)
@@ -265,7 +268,7 @@ uint8_t Timer1_option (uint8_t timer,uint8_t Com_Mode,uint8_t icu_edge)
 	return retvalue ;
 
 }
-
+/*fuction to switch between timers option for timer 0  , 1 and 2*/
 uint8_t options(uint8_t timer)
 	{
 	 switch(timer)
@@ -287,6 +290,7 @@ uint8_t options(uint8_t timer)
 		return retvalue ;
 	}
 
+/* function to set preload value */
 uint8_t set_preload (uint8_t timer,uint_16 Pre_Load)
 {
 	switch(timer)
@@ -309,6 +313,7 @@ uint8_t set_preload (uint8_t timer,uint_16 Pre_Load)
 	return retvalue ;
 
 }
+/* function to set OCR value */
 
 uint8_t set_OCR (uint8_t timer,uint_16 cmp_value)
 {
@@ -333,6 +338,7 @@ uint8_t set_OCR (uint8_t timer,uint_16 cmp_value)
 
 }
 
+/* function to set ICR value */
 
 uint8_t set_ICR (uint8_t timer,uint_16 ICR)
 {
@@ -349,7 +355,7 @@ uint8_t set_ICR (uint8_t timer,uint_16 ICR)
 		}
 		return retvalue ;
 }
-
+/*timer to set which interrupt to use for timer*/
 uint8_t Timer_interrupt_init(uint8_t timer,uint8_t interrupt )
 {
 	switch(timer)
@@ -375,6 +381,14 @@ uint8_t Timer_interrupt_init(uint8_t timer,uint8_t interrupt )
 
 }
 
+uint8_t pwm_generation_fnc(uint8_t duty_cycle)
+{uint8_t value ;
 
+
+	value = 255-((duty_cycle*255)/100);
+	TIMER_TCNT2_REGISTER = value ;
+	return value;
+
+}
 
 

@@ -25,20 +25,20 @@
 /* MODE FOR TIMER 1 */
 
 #define NORMAL_T1	          				1
-#define COMPER_T1_OCR1        			 	2  /*OCRA1*/
-#define FAST_PWM_T1_OCR1      				3  /*OCRA1*/
-#define FAST_PWM_T1_ICR1      				4  /*OCRA1*/
-#define PHASE_CORRECT_T1_OCR1 				5  /*OCRA1*/
-#define PHASE_CORRECT_T1_ICR1 			 	6  /*OCRA1*/
-#define PHASE_CORRECT_T1_8BIT			 	7  /*OCRA1*/
-#define PHASE_CORRECT_T1_9BIT  				8  /*OCRA1*/
-#define PHASE_CORRECT_T1_10BIT  			9  /*OCRA1*/
-#define PHASE_CORRECT_FREQ_CORRECT_ICR1  	10  /*OCRA1*/
-#define PHASE_CORRECT_FREQ_CORRECT_OCR1  	11  /*OCRA1*/
-#define FAST_PWM_T1_8BIT       				12  /*OCRA1*/
-#define FAST_PWM_T1_9BIT       				13  /*OCRA1*/
-#define FAST_PWM_T1_10BIT      				14  /*OCRA1*/
-#define COMPER_T1_ICR1        				15  /*OCRA1*/
+#define COMPER_T1_OCR1        			 	2
+#define FAST_PWM_T1_OCR1      				3
+#define FAST_PWM_T1_ICR1      				4
+#define PHASE_CORRECT_T1_OCR1 				5
+#define PHASE_CORRECT_T1_ICR1 			 	6
+#define PHASE_CORRECT_T1_8BIT			 	7
+#define PHASE_CORRECT_T1_9BIT  				8
+#define PHASE_CORRECT_T1_10BIT  			9
+#define PHASE_CORRECT_FREQ_CORRECT_ICR1  	10
+#define PHASE_CORRECT_FREQ_CORRECT_OCR1  	11
+#define FAST_PWM_T1_8BIT       				12
+#define FAST_PWM_T1_9BIT       				13
+#define FAST_PWM_T1_10BIT      				14
+#define COMPER_T1_ICR1        				15
 
 
 /******************************************/
@@ -54,25 +54,19 @@
 
 /* COM pins operation FOR TIMER 1  */
 
-#define  NORMAL_OPERATION_T1    0
-#define  TOGGLE_T1		  	   80
-#define  CLEAR_ON_CMP_T1       160
-#define  SET_ON_CMP_T1		   240
+#define  NORMAL_OPERATION_T1_CHANELA          0
+#define  TOGGLE_T1_CHANELA		  	 		  64
+#define  CLEAR_ON_CMP_T1_CHANELA              128
+#define  SET_ON_CMP_T1_CHANELA		   	 	  192
 
 /*******************************************/
 
-/*ICU_Edge*/
-
-#define YES   10
-#define NO    11
-
-/****************/
 
 #define RISING_EDGE   64
 #define FALING_EDGE   0
 
 /*******************************************/
-#define INTERRPUT_T0_OFF               0
+#define INTERRPUT_OFF                  0
 #define INTERRPUT_OVF_T0               1
 #define INTERRPUT_CMP_T0       	       2
 #define INTERRPUT_CMP_OVF_T0           3
@@ -111,14 +105,13 @@
 #define prescaler_256_T2    6
 #define prescaler_1024_T2   7
 
-#define prescaler_mask  7
 #define NP   0xff
 
 /*APIS*/
-uint8_t Timer_init(void);
-uint8_t Timer_SetPreLoad(uint8_t Preload_Val, uint8_t TimerId);
-uint8_t Timer_SetCompareVal(uint8_t cmp_Val, uint8_t TimerId);
-uint8_t Timer_PWM(uint8_t TimerId ,uint8_t duty_cycle);
+extern uint8_t Timer_init(void);
+extern uint8_t  pwm_generation_fnc(uint8_t duty_cycle);
+extern  uint8_t set_preload (uint8_t timer,uint_16 Pre_Load);
+
 
 
 #endif /* TIMER_H_ */

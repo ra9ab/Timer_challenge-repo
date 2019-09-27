@@ -16,41 +16,41 @@
 			USED,
 			NORMAL_T0_T2,
 			NORMAL_OPERATION_T0_T2 ,
-			YES,
 			INTERRPUT_OVF_T0,
 			0,
 			NP,
 			NP,
 			prescaler_8_T0_T1,
 			NP,
-			NP
+			NP,
+
+
 		},
 		/* Timer 1 */
 		{
 			NOT_USED,
-			FAST_PWM_T1_OCR1,
-			NORMAL_OPERATION_T1,
-			NO,
-
+			NORMAL_T1,
+			NORMAL_OPERATION_T1_CHANELA,
+			INTERRPUT_OVF_T1,
+			0,
 			NP,
-			128,
 			NP,
 			prescaler_8_T0_T1,
-			OC1A,
-			NP
+			NP,
+			RISING_EDGE
 		},
 		/* Timer 2 */
 		{
-			NOT_USED,
+			USED,
+			NORMAL_T0_T2,
+			NORMAL_OPERATION_T0_T2 ,
+			INTERRPUT_OVF_T2,
+			0,
 			NP,
 			NP,
+			prescaler_8_T2,
 			NP,
 			NP,
-			NP,
-			NP,
-			NP,
-			NP,
-			NP
 		}
 	};
 
