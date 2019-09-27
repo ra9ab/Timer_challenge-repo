@@ -9,7 +9,7 @@
 #ifndef DIO_CNFG_H_
 #define DIO_CNFG_H_
 
-#define NUM_OF_PINS 1
+#define NUM_OF_PINS 10
 
 #include "std_types.h"
 
@@ -22,8 +22,6 @@ typedef struct
 	uint8_t RES;
 }DIO_cnfg_pin;
 
-extern DIO_cnfg_pin DIO_cnfg_arr[NUM_OF_PINS];
-
-
+DIO_cnfg_pin DIO_cnfg_arr[NUM_OF_PINS];
 
 #endif /* DIO_CNFG_H_ */

@@ -9,7 +9,6 @@
 #ifndef DIO_H_
 #define DIO_H_
 
-#include "std_types.h"
 #include "DIO_cnfg.h"
 #include "REG.h"
 #include "macros.h"

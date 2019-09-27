@@ -6,24 +6,37 @@
  */
 #include "DIO.h"
 
+/************************************
+  * Function Name:DIO_INIT
+  * Use:to initialize all required pins (check configuration files)
+  * Input:void
+  * Return:status(OK,NOK)
+ ************************************
+  */
 
 uint8_t DIO_init (void)
 {
 	uint8_t retval = OK;
 	uint8_t loop_index = 0;
-	if (NUM_OF_PINS>MAX_NUM_OF_PINS) return retval=NOK;
+
+	if (NUM_OF_PINS>MAX_NUM_OF_PINS) return retval=NOK; //check number of pins
+
+
 
 	for(loop_index = 0;loop_index<NUM_OF_PINS;loop_index++)
 	{
 
-	if(DIO_cnfg_arr[loop_index].DIR == OUTPUT)
+	if( !(DIO_cnfg_arr[loop_index].PIN>=PIN0 && DIO_cnfg_arr[loop_index].PIN<=PIN7) )
+			return retval=NOK;                  //check pin entered
+
+	if(DIO_cnfg_arr[loop_index].DIR == OUTPUT) // check direction
 
 	{
-		switch(DIO_cnfg_arr[loop_index].PORT)
+		switch(DIO_cnfg_arr[loop_index].PORT)  // if output check port
 
 		{
 		case PORT_A:
-			set_bit(DDRA_REG,DIO_cnfg_arr[loop_index].PIN);
+			set_bit(DDRA_REG,DIO_cnfg_arr[loop_index].PIN); // set direction as o/p
 			break;
 
 		case PORT_B:
@@ -38,11 +51,12 @@ uint8_t DIO_init (void)
 			set_bit(DDRD_REG,DIO_cnfg_arr[loop_index].PIN);
 			break;
 		default :
-			retval =NOK;
+			retval =NOK; // not PORTA,B,C,D
 		}
 
 	}
 	else if (DIO_cnfg_arr[loop_index].DIR == INPUT)
+
 	{
 
 
@@ -51,47 +65,54 @@ uint8_t DIO_init (void)
 
 		{
 		case PORT_A:
-			clr_bit(DDRA_REG,DIO_cnfg_arr[loop_index].PIN);
-			if (DIO_cnfg_arr[loop_index].RES == PULLUP)
+
+			clr_bit(DDRA_REG,DIO_cnfg_arr[loop_index].PIN); //set direction as i/p
+
+			if (DIO_cnfg_arr[loop_index].RES == PULLUP)  // set res type (pull up or ext)
 				set_bit(PORTA_REG,DIO_cnfg_arr[loop_index].PIN);
 			else if (DIO_cnfg_arr[loop_index].RES == EXTRES)
 				clr_bit(PORTA_REG,DIO_cnfg_arr[loop_index].PIN);
 			else {
-
-				return retval=NOK;
+					return retval=NOK;                 // not pull up or external
 			}
 
 
 			break;
 
 		case PORT_B:
+
 			clr_bit(DDRB_REG,DIO_cnfg_arr[loop_index].PIN);
+
 			if (DIO_cnfg_arr[loop_index].RES == PULLUP)
-				set_bit(PORTA_REG,DIO_cnfg_arr[loop_index].PIN);
+				set_bit(PORTB_REG,DIO_cnfg_arr[loop_index].PIN);
 			else if (DIO_cnfg_arr[loop_index].RES == EXTRES)
-				clr_bit(PORTA_REG,DIO_cnfg_arr[loop_index].PIN);
+				clr_bit(PORTB_REG,DIO_cnfg_arr[loop_index].PIN);
 			else {
 
 				return retval=NOK;
 			}			break;
 
 		case PORT_C:
+
 			clr_bit(DDRC_REG,DIO_cnfg_arr[loop_index].PIN);
+
 			if (DIO_cnfg_arr[loop_index].RES == PULLUP)
-				set_bit(PORTA_REG,DIO_cnfg_arr[loop_index].PIN);
+				set_bit(PORTC_REG,DIO_cnfg_arr[loop_index].PIN);
 			else if (DIO_cnfg_arr[loop_index].RES == EXTRES)
-				clr_bit(PORTA_REG,DIO_cnfg_arr[loop_index].PIN);
+				clr_bit(PORTC_REG,DIO_cnfg_arr[loop_index].PIN);
 			else {
 
 				return retval=NOK;
 			}			break;
 
 		case PORT_D:
+
 			clr_bit(DDRD_REG,DIO_cnfg_arr[loop_index].PIN);
+
 			if (DIO_cnfg_arr[loop_index].RES == PULLUP)
-				set_bit(PORTA_REG,DIO_cnfg_arr[loop_index].PIN);
+				set_bit(PORTD_REG,DIO_cnfg_arr[loop_index].PIN);
 			else if (DIO_cnfg_arr[loop_index].RES == EXTRES)
-				clr_bit(PORTA_REG,DIO_cnfg_arr[loop_index].PIN);
+				clr_bit(PORTD_REG,DIO_cnfg_arr[loop_index].PIN);
 			else {
 
 				return retval=NOK;
@@ -102,7 +123,7 @@ uint8_t DIO_init (void)
 
 		}
 	}
-	else
+	else // not input or output
 	{
 		retval =NOK;
 
@@ -166,22 +187,28 @@ uint8_t DIO_init (void)
 		default :
 			retval =NOK;
 
-
 		}
-
 	}
 	else
 	{
 		retval =NOK;
 
-
 	}
 	}
+	return retval;
 }
+
+
+/************************************
+  * Function Name:DIO_set_pin_direction
+  * use:to set certain direction of a pin (i.e Output/Input)
+  * Input:port_id,pin_number,value
+  * Return:status(OK,NOK)
+ ************************************
+  */
 
 uint8_t DIO_set_pin_direction(uint8_t port_id,uint8_t pin_number,uint8_t direction)
 {
-
 
 	uint8_t retval = OK;
 
@@ -189,11 +216,8 @@ uint8_t DIO_set_pin_direction(uint8_t port_id,uint8_t pin_number,uint8_t directi
 
 		return retval=NOK;
 
-
-
 	if(direction==OUTPUT)
 	{
-
 
 		switch (port_id)
 		{
@@ -250,6 +274,14 @@ uint8_t DIO_set_pin_direction(uint8_t port_id,uint8_t pin_number,uint8_t directi
 	return retval;
 
 }
+
+/************************************
+  * Function Name:DIO_write_pin_value
+  * use:to write digital value(0,1) on certain pin
+  * Input:port_id,pin_number,value
+  * Return:status(OK,NOK)
+ ************************************
+  */
 
 uint8_t DIO_write_pin_value(uint8_t port_id,uint8_t pin_number,uint8_t value)
 {
@@ -324,7 +356,13 @@ uint8_t DIO_write_pin_value(uint8_t port_id,uint8_t pin_number,uint8_t value)
 	}
 	return retval;
 }
-
+/************************************
+  * Function Name:DIO_read_pin_value
+  * use:to read a digital value(0,1) from certain pin
+  * Input:port_id,pin_number,pointer to put got value in.
+  * Return:status(OK,NOK)
+ ************************************
+  */
 uint8_t  DIO_read_pin_value(uint8_t port_id,uint8_t pin_number,uint8_t* got)
 {
 	uint8_t retval = OK;
@@ -358,6 +396,14 @@ uint8_t  DIO_read_pin_value(uint8_t port_id,uint8_t pin_number,uint8_t* got)
 	return retval;
 
 }
+
+/************************************
+  * Function Name:DIO_set_port_direction
+  * use:to set certain direction of a pin (i.e Output/Input )
+  * Input:port_id,value that express direction (i.e 0x0f)
+  * Return:status(OK,NOK)
+ ************************************
+  */
 uint8_t DIO_set_port_direction(uint8_t port_id,uint8_t value)
 {
 	uint8_t retval = OK;
@@ -390,6 +436,13 @@ uint8_t DIO_set_port_direction(uint8_t port_id,uint8_t value)
 	return retval;
 
 }
+/************************************
+  * Function Name:DIO_write_pin_value
+  * use:to write digital value(0,1) on the port (i.e 0xff all output)
+  * Input:port_id,pin_number,value
+  * Return:status(OK,NOK)
+ ************************************
+  */
 uint8_t DIO_write_port_value(uint8_t port_id,uint8_t value)
 {
 	uint8_t retval = OK;
@@ -421,8 +474,13 @@ uint8_t DIO_write_port_value(uint8_t port_id,uint8_t value)
 	}
 	return retval;
 }
-
-
+/************************************
+  * Function Name:DIO_read_port_value
+  * use:to read a digital value(0,1) from certain pin
+  * Input:port_id,,pointer to put got value in.
+  * Return:status(OK,NOK)
+ ************************************
+  */
 uint8_t DIO_read_port_value(uint8_t port_id,uint8_t* got)
 
 {
@@ -453,8 +511,4 @@ uint8_t DIO_read_port_value(uint8_t port_id,uint8_t* got)
 
 
 }
-
-
-
-
 
