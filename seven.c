@@ -1,94 +1,221 @@
 /*
- * seven.c
+ * seven_seg.c
  *
- *  Created on: May 4, 2019
- *      Author: free bytes
+ *  Created on: Sep 25, 2019
+ *      Author: Yaakoub
  */
-#include<avr/delay.h>
-#include "seven.h"
-#include "reg.h"
 #include "DIO.h"
-void main(void)
+#include "reg.h"
+#include "DIO_cnfg.h"
+#include "seven.h"
+
+uint8_t SEVEN(uint8_t num,uint8_t port_id)
 {
-	/*
-	DDRA=0xff;
-	DDRD=0xff;
-	s8 x=5;
-	PORTD=0b10010010;
-
-	// volt for common in 7 seg not from 5v for safety wise
-while(1)
-
-{
-
-PORTA=0b10010000; //9
-_delay_ms(1000);
-PORTA=0b10000000; //8
-_delay_ms(1000);
-PORTA=0b11111000; //7
-_delay_ms(1000);
-PORTA=0b10000010; //6
-_delay_ms(1000);
-PORTA=0b10010010; //5
-_delay_ms(1000);
-PORTA=0b10011001; //4
-_delay_ms(1000);
-PORTA=0b10110000; //3
-_delay_ms(1000);
-PORTA=0b10100100; //2
-_delay_ms(1000);
-PORTA=0b11111001; //1
-_delay_ms(1000);
-PORTA=0b11000000; //0
-_delay_ms(1000);
-x--;
-if(x==-1)
-{
-	_delay_ms(10000);
-	x=5;
-	PORTD=0b10010010;
-}
-
-
-switch(x)
-{
-case 0:
-	PORTD=0b11000000;
-
-	break;
-case 1:
-	PORTD=0b11111001;
-
-	break;
-case 2:
-	PORTD=0b10100100;
-
-	break;
-case 3:
-	PORTD=0b10110000;
-
-	break;
-case 4:
-	PORTD=0b10011001;
-
-	break;
-
-}
-
-
-	}
-	*/
-	DIO_set_port_direction(PORT_D,0xff);
-	while(1)
+	uint8_t retval=OK;
+	switch (port_id)
 	{
-		for(uint8_t i=0;i<10;i++)
-	{
+	case PORT_A:
+		switch (num)
+		{
+		case 0:
+			PORTA_REG=0b11000000;
 
-		SEVEN(i,PORT_D);
-		_delay_ms(500);
+			break;
+		case 1:
+			PORTA_REG=0b11111001;
+
+			break;
+		case 2:
+			PORTA_REG=0b10100100;
+
+			break;
+		case 3:
+			PORTA_REG=0b10110000;
+
+			break;
+		case 4:
+			PORTA_REG=0b10011001;
+
+			break;
+		case 5:
+			PORTA_REG=0b10010010;
+
+			break;
+		case 6:
+			PORTA_REG=0b10000010;
+
+			break;
+		case 7:
+			PORTA_REG=0b11111000;
+
+			break;
+		case 8:
+			PORTA_REG=0b10000000;
+
+			break;
+		case 9:
+			PORTA_REG=0b10011001;
+
+			break;
+
+
+		}
+
+
+
+
+		break;
+
+		case PORT_B:
+			switch (num)
+			{
+			case 0:
+				PORTB_REG=0b11000000;
+
+				break;
+			case 1:
+				PORTB_REG=0b11111001;
+
+				break;
+			case 2:
+				PORTB_REG=0b10100100;
+
+				break;
+			case 3:
+				PORTB_REG=0b10110000;
+
+				break;
+			case 4:
+				PORTB_REG=0b10011001;
+
+				break;
+			case 5:
+				PORTB_REG=0b10010010;
+
+				break;
+			case 6:
+				PORTB_REG=0b10000010;
+
+				break;
+			case 7:
+				PORTB_REG=0b11111000;
+
+				break;
+			case 8:
+				PORTB_REG=0b10000000;
+
+				break;
+			case 9:
+				PORTB_REG=0b10011001;
+
+				break;
+
+
+			}
+			break;
+
+			case PORT_C:
+				switch (num)
+				{
+				case 0:
+					PORTC_REG=0b11000000;
+
+					break;
+				case 1:
+					PORTC_REG=0b11111001;
+
+					break;
+				case 2:
+					PORTC_REG=0b10100100;
+
+					break;
+				case 3:
+					PORTC_REG=0b10110000;
+
+					break;
+				case 4:
+					PORTC_REG=0b10011001;
+
+					break;
+				case 5:
+					PORTC_REG=0b10010010;
+
+					break;
+				case 6:
+					PORTC_REG=0b10000010;
+
+					break;
+				case 7:
+					PORTC_REG=0b11111000;
+
+					break;
+				case 8:
+					PORTC_REG=0b10000000;
+
+					break;
+				case 9:
+					PORTC_REG=0b10011001;
+
+					break;
+
+
+				}
+				break;
+
+				case PORT_D:
+					switch (num)
+					{
+					case 0:
+					PORTD_REG=0b11000000;
+
+						break;
+					case 1:
+						PORTD_REG=0b11111001;
+
+						break;
+					case 2:
+						PORTD_REG=0b10100100;
+
+						break;
+					case 3:
+						PORTD_REG=0b10110000;
+
+						break;
+					case 4:
+						PORTD_REG=0b10011001;
+
+						break;
+					case 5:
+						PORTD_REG=0b10010010;
+
+						break;
+					case 6:
+						PORTD_REG=0b10000010;
+
+						break;
+					case 7:
+						PORTD_REG=0b11111000;
+
+						break;
+					case 8:
+						PORTD_REG=0b10000000;
+
+						break;
+					case 9:
+						PORTD_REG=0b10010000;
+
+						break;
+
+
+					}
+					break;
+					default :
+						retval =NOK;
 
 	}
-	}
+	return retval;
 }
+
+
 
 
