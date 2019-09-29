@@ -14,13 +14,13 @@
 		/* Timer 0 */
 		{
 			USED,
-			NORMAL_T0_T2,
+			COMPER_T0_T2,
 			NORMAL_OPERATION_T0_T2 ,
-			INTERRPUT_OVF_T0,
+			INTERRPUT_OFF,
 			0,
+			125,
 			NP,
-			NP,
-			prescaler_8_T0_T1,
+			prescaler_64_T0_T1,
 			NP,
 			NP,
 
